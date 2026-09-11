@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockCompare Indonesia</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <div class="container">
+        <h1>📊 StockCompare</h1>
+        <p>Bandingkan saham Indonesia dengan cepat</p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="search-box">
+        <h2>Bandingkan Emiten</h2>
+
+        <div class="inputs">
+            <input id="stock1" type="text" placeholder="Contoh: DMAS">
+            <input id="stock2" type="text" placeholder="Contoh: SMSM">
+            <button onclick="compareStocks()">Bandingkan</button>
+        </div>
+
+        <p id="status"></p>
+    </section>
+
+    <section id="result" class="result hidden">
+
+        <div class="stock-card">
+            <h2 id="name1">-</h2>
+            <span id="ticker1">-</span>
+
+            <div class="price" id="price1">Rp -</div>
+
+            <div class="metrics">
+                <div>
+                    <small>Dividend Yield</small>
+                    <strong id="dividend1">-</strong>
+                </div>
+
+                <div>
+                    <small>PER</small>
+                    <strong id="per1">-</strong>
+                </div>
+
+                <div>
+                    <small>PBV</small>
+                    <strong id="pbv1">-</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="vs">VS</div>
+
+        <div class="stock-card">
+            <h2 id="name2">-</h2>
+            <span id="ticker2">-</span>
+
+            <div class="price" id="price2">Rp -</div>
+
+            <div class="metrics">
+                <div>
+                    <small>Dividend Yield</small>
+                    <strong id="dividend2">-</strong>
+                </div>
+
+                <div>
+                    <small>PER</small>
+                    <strong id="per2">-</strong>
+                </div>
+
+                <div>
+                    <small>PBV</small>
+                    <strong id="pbv2">-</strong>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="comparison hidden" id="comparison">
+        <h2>📈 Perbandingan</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th id="tableTicker1">-</th>
+                    <th id="tableTicker2">-</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>Harga</td>
+                    <td id="tablePrice1">-</td>
+                    <td id="tablePrice2">-</td>
+                </tr>
+
+                <tr>
+                    <td>Dividend Yield</td>
+                    <td id="tableDividend1">-</td>
+                    <td id="tableDividend2">-</td>
+                </tr>
+
+                <tr>
+                    <td>PER</td>
+                    <td id="tablePer1">-</td>
+                    <td id="tablePer2">-</td>
+                </tr>
+
+                <tr>
+                    <td>PBV</td>
+                    <td id="tablePbv1">-</td>
+                    <td id="tablePbv2">-</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+</main>
+
+<footer>
+    StockCompare Indonesia © 2026
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
