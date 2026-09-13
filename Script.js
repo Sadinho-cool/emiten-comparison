@@ -1,46 +1,46 @@
-const stockData = {
 
-    DMAS: {
-        name: "Puradelta Lestari",
-        price: 350,
-        dividend: 15.2,
-        per: 8.4,
-        pbv: 1.1
-    },
-
-    SMSM: {
-        name: "Selamat Sempurna",
-        price: 1850,
-        dividend: 6.8,
-        per: 14.2,
-        pbv: 2.5
-    },
-
-    BIRD: {
-        name: "Blue Bird",
-        price: 1700,
-        dividend: 7.1,
-        per: 9.8,
-        pbv: 1.3
-    },
-
-    IPCC: {
-        name: "Indonesia Kendaraan Terminal",
-        price: 700,
-        dividend: 9.5,
-        per: 8.1,
-        pbv: 1.0
-    }
-};
-
+const API_URL =
+    "https://indonesia-stock-comparison.sayyid-syafiq136.workers.dev";
 
 function formatRupiah(number) {
-    return "Rp " + number.toLocaleString("id-ID");
+    if (number === null || number === undefined) {
+        return "Data tidak tersedia";
+    }
+
+    return "Rp " + Number(number).toLocaleString("id-ID");
 }
 
+function formatNumber(number) {
+    if (number === null || number === undefined) {
+        return "Data tidak tersedia";
+    }
 
-function compareStocks() {
+    return Number(number).toLocaleString("id-ID");
+}
 
+function formatPercent(number) {
+    if (number === null || number === undefined) {
+        return "Data tidak tersedia";
+    }
+
+    return Number(number).toFixed(2) + "%";
+}
+
+async function getStockData(ticker) {
+    const response = await fetch(
+        `${API_URL}/?symbol=${encodeURIComponent(ticker)}`
+    );
+
+    const data = await response.json();
+
+    if (!response.ok || data.error) {
+        throw new Error(data.error || "Gagal mengambil data saham.");
+    }
+
+    return data;
+}
+
+async function compareStocks() {
     const ticker1 = document
         .getElementById("stock1")
         .value
@@ -55,74 +55,87 @@ function compareStocks() {
 
     const status = document.getElementById("status");
 
-    if (!stockData[ticker1] || !stockData[ticker2]) {
-        status.textContent =
-            "Ticker belum tersedia di database contoh.";
+    if (!ticker1 || !ticker2) {
+        status.textContent = "Masukkan dua ticker saham terlebih dahulu.";
         return;
     }
 
-    const stock1 = stockData[ticker1];
-    const stock2 = stockData[ticker2];
+    status.textContent = "Sedang mengambil data saham...";
 
-    document.getElementById("result").classList.remove("hidden");
-    document.getElementById("comparison").classList.remove("hidden");
+    try {
+        const [stock1, stock2] = await Promise.all([
+            getStockData(ticker1),
+            getStockData(ticker2)
+        ]);
 
-    document.getElementById("name1").textContent = stock1.name;
-    document.getElementById("ticker1").textContent = ticker1;
-    document.getElementById("price1").textContent =
-        formatRupiah(stock1.price);
+        document.getElementById("result").classList.remove("hidden");
+        document.getElementById("comparison").classList.remove("hidden");
 
-    document.getElementById("dividend1").textContent =
-        stock1.dividend + "%";
+        // Saham pertama
+        document.getElementById("name1").textContent = stock1.name;
+        document.getElementById("ticker1").textContent = stock1.symbol;
+        document.getElementById("price1").textContent =
+            formatRupiah(stock1.price);
 
-    document.getElementById("per1").textContent =
-        stock1.per + "x";
+        document.getElementById("dividend1").textContent =
+            "Belum tersedia";
 
-    document.getElementById("pbv1").textContent =
-        stock1.pbv + "x";
+        document.getElementById("per1").textContent =
+            "Belum tersedia";
 
+        document.getElementById("pbv1").textContent =
+            "Belum tersedia";
 
-    document.getElementById("name2").textContent = stock2.name;
-    document.getElementById("ticker2").textContent = ticker2;
-    document.getElementById("price2").textContent =
-        formatRupiah(stock2.price);
+        // Saham kedua
+        document.getElementById("name2").textContent = stock2.name;
+        document.getElementById("ticker2").textContent = stock2.symbol;
+        document.getElementById("price2").textContent =
+            formatRupiah(stock2.price);
 
-    document.getElementById("dividend2").textContent =
-        stock2.dividend + "%";
+        document.getElementById("dividend2").textContent =
+            "Belum tersedia";
 
-    document.getElementById("per2").textContent =
-        stock2.per + "x";
+        document.getElementById("per2").textContent =
+            "Belum tersedia";
 
-    document.getElementById("pbv2").textContent =
-        stock2.pbv + "x";
+        document.getElementById("pbv2").textContent =
+            "Belum tersedia";
 
+        // Tabel perbandingan
+        document.getElementById("tableTicker1").textContent = stock1.symbol;
+        document.getElementById("tableTicker2").textContent = stock2.symbol;
 
-    document.getElementById("tableTicker1").textContent = ticker1;
-    document.getElementById("tableTicker2").textContent = ticker2;
+        document.getElementById("tablePrice1").textContent =
+            formatRupiah(stock1.price);
 
-    document.getElementById("tablePrice1").textContent =
-        formatRupiah(stock1.price);
+        document.getElementById("tablePrice2").textContent =
+            formatRupiah(stock2.price);
 
-    document.getElementById("tablePrice2").textContent =
-        formatRupiah(stock2.price);
+        document.getElementById("tableDividend1").textContent =
+            "Belum tersedia";
 
-    document.getElementById("tableDividend1").textContent =
-        stock1.dividend + "%";
+        document.getElementById("tableDividend2").textContent =
+            "Belum tersedia";
 
-    document.getElementById("tableDividend2").textContent =
-        stock2.dividend + "%";
+        document.getElementById("tablePer1").textContent =
+            "Belum tersedia";
 
-    document.getElementById("tablePer1").textContent =
-        stock1.per + "x";
+        document.getElementById("tablePer2").textContent =
+            "Belum tersedia";
 
-    document.getElementById("tablePer2").textContent =
-        stock2.per + "x";
+        document.getElementById("tablePbv1").textContent =
+            "Belum tersedia";
 
-    document.getElementById("tablePbv1").textContent =
-        stock1.pbv + "x";
+        document.getElementById("tablePbv2").textContent =
+            "Belum tersedia";
 
-    document.getElementById("tablePbv2").textContent =
-        stock2.pbv + "x";
+        status.textContent =
+            "Perbandingan berhasil dibuat menggunakan data API.";
 
-    status.textContent = "Perbandingan berhasil dibuat.";
+    } catch (error) {
+        console.error(error);
+
+        status.textContent =
+            "Gagal mengambil data. Pastikan ticker benar dan coba lagi.";
+    }
 }
